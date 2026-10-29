@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rida Hassan | BSCS Student & Software Developer</title>
+    
+    <!-- External CSS Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        accent: {
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+                            '50%': { opacity: '0.8', transform: 'scale(1.08)' }
+                        }
+                    },
+                    animation: {
+                        float: 'float 4s ease-in-out infinite',
+                        pulseGlow: 'pulseGlow 6s ease-in-out infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Card Effect */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Gradient Text Effect */
+        .gradient-text {
+            background: linear-gradient(135deg, #14b8a6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Navigation Active Link Highlight */
+        .nav-link-active {
+            color: #14b8a6 !important;
+            background-color: rgba(20, 184, 166, 0.1);
+            font-weight: 700;
+        }
+
+        /* Smooth Page Transition with Staggered Entrance */
+        .page-transition {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            will-change: opacity, transform;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Staggered Entrance Helper Classes */
+        .animate-child {
+            animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.12s; }
+        .delay-3 { animation-delay: 0.19s; }
+        .delay-4 { animation-delay: 0.26s; }
+        .delay-5 { animation-delay: 0.33s; }
+        .delay-6 { animation-delay: 0.40s; }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Progress Bar Animation */
+        .progress-bar-fill {
+            width: 0%;
+            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Printing Utilities */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .page-transition {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            .animate-child {
+                opacity: 1 !important;
+                transform: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-semibold border border-brand-500/30 pointer-events-none">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-brand-500 text-lg"></i>
+        <span id="toast-msg">Email copied to clipboard!</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 no-print backdrop-blur-md bg-white/80 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <button onclick="navigateTo('home')" class="text-xl font-extrabold tracking-tight flex items-center gap-2 group cursor-pointer focus:outline-none">
+                <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-500 to-accent-500 flex items-center justify-center text-white font-black text-sm shadow-md group-hover:rotate-12 group-hover:scale-105 transition-transform duration-300">RH</span>
+                <span class="gradient-text">Rida Hassan</span>
+            </button>
+
+            <!-- Desktop Nav Items -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium">
+                <button onclick="navigateTo('home')" id="nav-home" class="nav-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-200 hover:-translate-y-0.5">Home</button>
+                <button onclick="navigateTo('projects')" id="nav-projects" class="nav-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-200 hover:-translate-y-0.5">Projects</button>
+                <button onclick="navigateTo('skills')" id="nav-skills" class="nav-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-200 hover:-translate-y-0.5">Technical Skills</button>
+                <button onclick="navigateTo('education')" id="nav-education" class="nav-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-200 hover:-translate-y-0.5">Education</button>
+                <button onclick="navigateTo('certifications')" id="nav-certifications" class="nav-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-200 hover:-translate-y-0.5">Certifications</button>
+                <button onclick="navigateTo('contact')" id="nav-contact" class="nav-btn px-3.5 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-200 hover:-translate-y-0.5">Contact</button>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-3">
+                <button id="themeToggle" aria-label="Toggle theme" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 hover:rotate-12">
+                    <i id="themeIcon" class="fa-solid fa-sun text-amber-500"></i>
+                </button>
+
+                <a href="https://github.com/RidaaHassan" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 text-sm font-semibold text-slate-800 dark:text-slate-200 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 rounded-xl transition-all duration-200 hover:-translate-y-0.5 group">
+                    <i class="fa-brands fa-github text-base group-hover:rotate-12 transition-transform"></i>
+                    <span>GitHub</span>
+                </a>
+
+                <button onclick="downloadCV()" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 rounded-xl hover:shadow-lg hover:shadow-brand-500/20 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer group">
+                    <i class="fa-solid fa-download group-hover:translate-y-0.5 transition-transform"></i>
+                    <span>Download CV</span>
+                </button>
+
+                <button id="mobileMenuBtn" aria-label="Toggle menu" class="md:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg px-4 pt-2 pb-4 space-y-1 transition-all duration-300">
+            <button onclick="navigateTo('home'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Home</button>
+            <button onclick="navigateTo('projects'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Projects</button>
+            <button onclick="navigateTo('skills'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Technical Skills</button>
+            <button onclick="navigateTo('education'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Education</button>
+            <button onclick="navigateTo('certifications'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Certifications</button>
+            <button onclick="navigateTo('contact'); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Contact</button>
+            <div class="pt-2 flex flex-col gap-2">
+                <a href="https://github.com/RidaaHassan" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-800 dark:text-slate-200 bg-slate-200 dark:bg-slate-800 rounded-xl">
+                    <i class="fa-brands fa-github text-base"></i>
+                    <span>GitHub Profile</span>
+                </a>
+                <button onclick="downloadCV()" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 rounded-xl">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Download CV</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Views Container -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- PAGE 1: HOME -->
+        <section id="page-home" class="page-transition space-y-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-4">
+                <div class="lg:col-span-5 flex justify-center animate-child delay-1">
+                    <div class="relative group animate-float">
+                        <div class="absolute -inset-2 bg-gradient-to-r from-brand-500 via-purple-500 to-accent-500 rounded-3xl blur-xl opacity-70 group-hover:opacity-100 group-hover:scale-105 transition duration-500"></div>
+                        <div class="relative w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-3xl bg-slate-900 overflow-hidden border-2 border-white/20 shadow-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-[1.02]">
+                            <img src="profile-image.webp" alt="Rida Hassan Profile Picture" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute bottom-4 left-4 right-4 bg-slate-950/85 backdrop-blur-md px-3.5 py-2.5 rounded-xl border border-white/10 text-center">
+                                <span class="text-xs font-bold text-brand-400 uppercase tracking-widest block">Qarshi University</span>
+                                <p class="text-xs text-slate-300 font-semibold mt-0.5">BSCS 5th Semester Student</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="animate-child delay-1 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-xs font-bold uppercase tracking-wider border border-brand-500/20">
+                        <span class="w-2.5 h-2.5 rounded-full bg-brand-500 animate-ping"></span>
+                        Available for Developer Roles & Tech Internships
+                    </div>
+
+                    <h1 class="animate-child delay-2 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none">
+                        Hi, I'm <br class="hidden sm:inline">
+                        <span class="gradient-text inline-block transition-transform duration-300 hover:scale-105">Rida Hassan</span>
+                    </h1>
+
+                    <p class="animate-child delay-3 text-lg sm:text-xl font-semibold text-slate-600 dark:text-slate-300">
+                        Computer Science Student & Software Developer
+                    </p>
+
+                    <p class="animate-child delay-3 text-slate-600 dark:text-slate-400 leading-relaxed text-base sm:text-lg max-w-2xl">
+                        I am currently pursuing my BSCS degree (5th semester) at Qarshi University. Passionate about algorithmic problem solving, clean web applications, and database architecture. Seeking opportunities to apply my skills in dynamic technical teams.
+                    </p>
+
+                    <div class="animate-child delay-4 flex flex-wrap gap-3 justify-center lg:justify-start text-xs font-semibold text-slate-600 dark:text-slate-300 pt-1">
+                        <div class="flex items-center gap-2 glass-card px-3.5 py-2 rounded-xl hover:-translate-y-1 transition-all duration-300">
+                            <i class="fa-solid fa-location-dot text-brand-500 animate-bounce"></i>
+                            <span>Lahore, Pakistan</span>
+                        </div>
+                        <div class="flex items-center gap-2 glass-card px-3.5 py-2 rounded-xl hover:-translate-y-1 transition-all duration-300">
+                            <i class="fa-solid fa-graduation-cap text-accent-500"></i>
+                            <span>BS Computer Science</span>
+                        </div>
+                        <div class="flex items-center gap-2 glass-card px-3.5 py-2 rounded-xl hover:-translate-y-1 transition-all duration-300">
+                            <i class="fa-solid fa-code text-purple-500"></i>
+                            <span>C++, Java, SQL & Web</span>
+                        </div>
+                    </div>
+
+                    <div class="animate-child delay-5 flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-4">
+                        <button onclick="navigateTo('projects')" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-brand-600 to-accent-600 text-white font-bold hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2.5 cursor-pointer group">
+                            <span>Explore My Projects</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+
+                        <a href="https://github.com/RidaaHassan" target="_blank" class="px-6 py-3.5 rounded-2xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2.5 group">
+                            <i class="fa-brands fa-github text-lg group-hover:rotate-12 transition-transform"></i>
+                            <span>GitHub</span>
+                        </a>
+
+                        <button onclick="copyEmail()" class="px-5 py-3.5 rounded-2xl glass-card font-bold hover:bg-slate-200 dark:hover:bg-slate-800 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2 cursor-pointer group">
+                            <i class="fa-solid fa-copy text-brand-500 group-hover:scale-110 transition-transform"></i>
+                            <span>Copy Email</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="animate-child delay-6 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+                <button onclick="navigateTo('projects')" class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-brand-500/10 hover:bg-brand-500/20 text-brand-600 dark:text-brand-400 font-bold transition-all duration-200 group">
+                    <span>Next Section: View Projects</span>
+                    <i class="fa-solid fa-chevron-right group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE 2: PROJECTS -->
+        <section id="page-projects" class="page-transition space-y-10 hidden">
+            <div class="animate-child delay-1 text-center max-w-2xl mx-auto space-y-3">
+                <span class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-widest px-3 py-1 rounded-full bg-brand-500/10">Portfolio Showcase</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Featured Projects & Web Apps</h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm">Explore live web applications and desktop solutions created during my coursework and independent learning.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Project 1: Perfume Website -->
+                <div class="animate-child delay-2 glass-card rounded-2xl p-6 flex flex-col justify-between space-y-5 border border-transparent hover:border-brand-500/50 transition-all duration-300 hover:-translate-y-1.5 shadow-md hover:shadow-xl hover:shadow-brand-500/10 group">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-pink-500/10 text-pink-500 flex items-center justify-center text-xl font-bold group-hover:bg-pink-500 group-hover:text-white transition-colors duration-300">
+                                <i class="fa-solid fa-bottle-droplet"></i>
+                            </div>
+                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Live Vercel
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-bold group-hover:text-brand-500 transition-colors">Perfume Store Web Application</h3>
+                        <p class="text-xs font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
+                            An elegant, responsive web platform designed for luxury fragrance showcase, catalog navigation, and interactive UI components.
+                        </p>
+                    </div>
+                    <a href="https://perfume-website-theta-sooty.vercel.app/" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs flex items-center justify-center gap-2 hover:bg-brand-600 dark:hover:bg-brand-400 transition-all duration-200 group/btn">
+                        <span>Visit Live Site</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform"></i>
+                    </a>
+                </div>
+
+                <!-- Project 2: Cookies Website -->
+                <div class="animate-child delay-3 glass-card rounded-2xl p-6 flex flex-col justify-between space-y-5 border border-transparent hover:border-brand-500/50 transition-all duration-300 hover:-translate-y-1.5 shadow-md hover:shadow-xl hover:shadow-amber-500/10 group">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-xl font-bold group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300">
+                                <i class="fa-solid fa-cookie-bite"></i>
+                            </div>
+                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Live Vercel
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-bold group-hover:text-brand-500 transition-colors">Bakery & Cookies App</h3>
+                        <p class="text-xs font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
+                            A modern product catalog dynamic frontend featuring smooth animations, structured product cards, and responsive shopping UI.
+                        </p>
+                    </div>
+                    <a href="https://cookies-website-b8dm.vercel.app/" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs flex items-center justify-center gap-2 hover:bg-brand-600 dark:hover:bg-brand-400 transition-all duration-200 group/btn">
+                        <span>Visit Live Site</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform"></i>
+                    </a>
+                </div>
+
+                <!-- Project 3: Pension App -->
+                <div class="animate-child delay-4 glass-card rounded-2xl p-6 flex flex-col justify-between space-y-5 border border-transparent hover:border-brand-500/50 transition-all duration-300 hover:-translate-y-1.5 shadow-md hover:shadow-xl hover:shadow-brand-500/10 group">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-500 flex items-center justify-center text-xl font-bold group-hover:bg-brand-500 group-hover:text-white transition-colors duration-300">
+                                <i class="fa-solid fa-wallet"></i>
+                            </div>
+                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400">Software UI Solution</span>
+                        </div>
+                        <h3 class="text-xl font-bold group-hover:text-brand-500 transition-colors">Pension Management App</h3>
+                        <blockquote class="italic text-xs text-brand-600 dark:text-brand-400 font-semibold border-l-2 border-brand-500 pl-2">
+                            "Retire Smart: Your Pension, Our Priority"
+                        </blockquote>
+                        <p class="text-xs font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Intuitive UI application built to automate pension calculation, track retirement disbursements, and simplify record management for organizations.
+                        </p>
+                    </div>
+                    <div class="text-xs text-slate-400 font-semibold pt-2 border-t border-slate-200 dark:border-slate-800 flex justify-between">
+                        <span>Desktop / Web UI System</span>
+                        <i class="fa-solid fa-check text-brand-500"></i>
+                    </div>
+                </div>
+
+                <!-- Project 4: Attendance System -->
+                <div class="animate-child delay-5 glass-card rounded-2xl p-6 flex flex-col justify-between space-y-5 border border-transparent hover:border-accent-500/50 transition-all duration-300 hover:-translate-y-1.5 shadow-md hover:shadow-xl hover:shadow-accent-500/10 group">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-accent-500/10 text-accent-500 flex items-center justify-center text-xl font-bold group-hover:bg-accent-500 group-hover:text-white transition-colors duration-300">
+                                <i class="fa-solid fa-clipboard-user"></i>
+                            </div>
+                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-accent-500/10 text-accent-600 dark:text-accent-400">Database & UI</span>
+                        </div>
+                        <h3 class="text-xl font-bold group-hover:text-accent-500 transition-colors">Attendance Management System</h3>
+                        <p class="text-xs font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Interactive application designed for educational institutes to digitally log student presence, generate reports, and track punctuality metrics.
+                        </p>
+                    </div>
+                    <div class="text-xs text-slate-400 font-semibold pt-2 border-t border-slate-200 dark:border-slate-800 flex justify-between">
+                        <span>Academic Software</span>
+                        <i class="fa-solid fa-check text-accent-500"></i>
+                    </div>
+                </div>
+
+                <!-- Project 5: Secure File Transfer -->
+                <div class="animate-child delay-6 glass-card rounded-2xl p-6 flex flex-col justify-between space-y-5 border border-transparent hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-1.5 shadow-md hover:shadow-xl hover:shadow-purple-500/10 group">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-xl font-bold group-hover:bg-purple-500 group-hover:text-white transition-colors duration-300">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-600 dark:text-purple-400">Cryptography & Python</span>
+                        </div>
+                        <h3 class="text-xl font-bold group-hover:text-purple-500 transition-colors">Secure Cryptographic File Transfer</h3>
+                        <p class="text-xs font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Hybrid encryption tool leveraging AES-256 and RSA-2048 with SHA-256 verification paired with a Gradio web interface for safe file transfer.
+                        </p>
+                    </div>
+                    <div class="text-xs text-slate-400 font-semibold pt-2 border-t border-slate-200 dark:border-slate-800 flex justify-between">
+                        <span>Cybersecurity Project</span>
+                        <i class="fa-solid fa-lock text-purple-500"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <button onclick="navigateTo('home')" class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-brand-500 font-semibold transition">
+                    <i class="fa-solid fa-arrow-left"></i> Home
+                </button>
+                <button onclick="navigateTo('skills')" class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-brand-500/10 hover:bg-brand-500/20 text-brand-600 dark:text-brand-400 font-bold transition-all duration-200 group">
+                    <span>Next Section: View Technical Skills</span>
+                    <i class="fa-solid fa-chevron-right group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE 3: TECHNICAL SKILLS -->
+        <section id="page-skills" class="page-transition space-y-10 hidden">
+            <div class="animate-child delay-1 text-center max-w-2xl mx-auto space-y-3">
+                <span class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-widest px-3 py-1 rounded-full bg-brand-500/10">Technical Competencies</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Technical Skills & Expertise</h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm">Structured overview of programming languages, frontend web engineering, relational databases, and version control tooling.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 1. Programming Languages -->
+                <div class="animate-child delay-2 glass-card p-6 rounded-2xl space-y-4 border border-transparent hover:border-brand-500/50 hover:-translate-y-1 transition-all duration-300 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 rounded-xl bg-brand-500/10 text-brand-500 text-xl font-bold">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-extrabold">Programming Languages</h3>
+                            <p class="text-xs font-semibold text-brand-600 dark:text-brand-400">Core algorithms & Object-Oriented Programming</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <span class="px-3 py-1 rounded-lg bg-brand-500/10 text-brand-600 dark:text-brand-300 font-bold text-xs border border-brand-500/20 transition-transform hover:scale-105">C++</span>
+                        <span class="px-3 py-1 rounded-lg bg-brand-500/10 text-brand-600 dark:text-brand-300 font-bold text-xs border border-brand-500/20 transition-transform hover:scale-105">Java</span>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Algorithmic problem solving, data structures, pointer mechanics, and Object-Oriented Programming (OOP) architectures.
+                    </p>
+                    <div class="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden mt-3">
+                        <div class="bg-brand-500 h-full progress-bar-fill" data-progress="85%"></div>
+                    </div>
+                </div>
+
+                <!-- 2. Web Development -->
+                <div class="animate-child delay-3 glass-card p-6 rounded-2xl space-y-4 border border-transparent hover:border-accent-500/50 hover:-translate-y-1 transition-all duration-300 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 rounded-xl bg-accent-500/10 text-accent-500 text-xl font-bold">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-extrabold">Web Development</h3>
+                            <p class="text-xs font-semibold text-accent-500">Semantic, responsive & interactive frontend</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <span class="px-3 py-1 rounded-lg bg-accent-500/10 text-accent-600 dark:text-accent-300 font-bold text-xs border border-accent-500/20 transition-transform hover:scale-105">HTML</span>
+                        <span class="px-3 py-1 rounded-lg bg-accent-500/10 text-accent-600 dark:text-accent-300 font-bold text-xs border border-accent-500/20 transition-transform hover:scale-105">CSS</span>
+                        <span class="px-3 py-1 rounded-lg bg-accent-500/10 text-accent-600 dark:text-accent-300 font-bold text-xs border border-accent-500/20 transition-transform hover:scale-105">JavaScript</span>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        HTML5 semantics, modern CSS3 layout systems (flexbox, grid), and native JavaScript for responsive DOM interactivity without external frameworks.
+                    </p>
+                    <div class="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden mt-3">
+                        <div class="bg-accent-500 h-full progress-bar-fill" data-progress="90%"></div>
+                    </div>
+                </div>
+
+                <!-- 3. Databases -->
+                <div class="animate-child delay-4 glass-card p-6 rounded-2xl space-y-4 border border-transparent hover:border-emerald-500/50 hover:-translate-y-1 transition-all duration-300 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 rounded-xl bg-emerald-500/10 text-emerald-500 text-xl font-bold">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-extrabold">Databases</h3>
+                            <p class="text-xs font-semibold text-emerald-500">Schema design, relational models & queries</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <span class="px-3 py-1 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-300 font-bold text-xs border border-emerald-500/20 transition-transform hover:scale-105">SQL</span>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Relational database structures, table relationships, constraints, indexes, and writing structured SQL queries.
+                    </p>
+                    <div class="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden mt-3">
+                        <div class="bg-emerald-500 h-full progress-bar-fill" data-progress="80%"></div>
+                    </div>
+                </div>
+
+                <!-- 4. Tools & Platforms -->
+                <div class="animate-child delay-5 glass-card p-6 rounded-2xl space-y-4 border border-transparent hover:border-purple-500/50 hover:-translate-y-1 transition-all duration-300 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="p-3 rounded-xl bg-purple-500/10 text-purple-500 text-xl font-bold">
+                            <i class="fa-solid fa-toolbox"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-extrabold">Tools & Platforms</h3>
+                            <p class="text-xs font-semibold text-purple-500">Version control, deployment & workflows</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-1">
+                        <span class="px-3 py-1 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-300 font-bold text-xs border border-purple-500/20 transition-transform hover:scale-105">Git</span>
+                        <span class="px-3 py-1 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-300 font-bold text-xs border border-purple-500/20 transition-transform hover:scale-105">GitHub</span>
+                        <span class="px-3 py-1 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-300 font-bold text-xs border border-purple-500/20 transition-transform hover:scale-105">Vercel</span>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Git repository tracking, team branch workflows on GitHub, and global live web app deployments on Vercel.
+                    </p>
+                    <div class="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden mt-3">
+                        <div class="bg-purple-500 h-full progress-bar-fill" data-progress="85%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="animate-child delay-6 glass-card p-6 rounded-2xl space-y-4">
+                <h3 class="text-lg font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-brand-500"></i>
+                    <span>Productivity, Languages & Additional Skills</span>
+                </h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 flex items-center gap-2 hover:scale-105 transition-transform cursor-default">
+                        <i class="fa-solid fa-file-word text-brand-500"></i>
+                        <span>Text Processor</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 flex items-center gap-2 hover:scale-105 transition-transform cursor-default">
+                        <i class="fa-solid fa-file-excel text-emerald-500"></i>
+                        <span>Spreadsheets</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 flex items-center gap-2 hover:scale-105 transition-transform cursor-default">
+                        <i class="fa-solid fa-file-powerpoint text-amber-500"></i>
+                        <span>Slide Presentations</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 flex items-center gap-2 hover:scale-105 transition-transform cursor-default">
+                        <i class="fa-solid fa-video text-purple-500"></i>
+                        <span>Video Editing</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <button onclick="navigateTo('projects')" class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-brand-500 font-semibold transition">
+                    <i class="fa-solid fa-arrow-left"></i> Projects
+                </button>
+                <button onclick="navigateTo('education')" class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-brand-500/10 hover:bg-brand-500/20 text-brand-600 dark:text-brand-400 font-bold transition-all duration-200 group">
+                    <span>Next Section: View Education</span>
+                    <i class="fa-solid fa-chevron-right group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE 4: EDUCATION -->
+        <section id="page-education" class="page-transition space-y-10 hidden">
+            <div class="animate-child delay-1 text-center max-w-2xl mx-auto space-y-3">
+                <span class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-widest px-3 py-1 rounded-full bg-brand-500/10">Academic Journey</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Education Background</h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm">Formal education timeline and current computer science studies.</p>
+            </div>
+
+            <div class="relative border-l-2 border-slate-200 dark:border-slate-800 ml-4 sm:ml-28 space-y-8">
+                <!-- Degree 1 -->
+                <div class="animate-child delay-2 relative pl-6 sm:pl-8 group">
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-brand-500 ring-4 ring-slate-50 dark:ring-slate-950 group-hover:scale-150 group-hover:bg-accent-500 transition-all duration-300"></div>
+                    <div class="glass-card p-6 rounded-2xl space-y-3 border border-transparent hover:border-brand-500/50 hover:-translate-x-1 transition-all duration-300">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">BS Computer Science (BSCS)</h3>
+                            <span class="px-3 py-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-xs font-extrabold">2024 - 2028 (Expected)</span>
+                        </div>
+                        <p class="text-sm font-bold text-brand-600 dark:text-brand-400">Qarshi University</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Currently enrolled in the 5th Semester. Undertaking rigorous coursework in algorithms, data structures, object-oriented programming, computer organization, database management systems, and cybersecurity principles.
+                        </p>
+                        <div class="flex flex-wrap gap-2 pt-1">
+                            <span class="px-2.5 py-0.5 rounded-md bg-slate-200 dark:bg-slate-800 text-[11px] font-semibold">5th Semester</span>
+                            <span class="px-2.5 py-0.5 rounded-md bg-slate-200 dark:bg-slate-800 text-[11px] font-semibold">Core CS Curriculum</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Degree 2 -->
+                <div class="animate-child delay-3 relative pl-6 sm:pl-8 group">
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-600 ring-4 ring-slate-50 dark:ring-slate-950 group-hover:scale-150 group-hover:bg-brand-500 transition-all duration-300"></div>
+                    <div class="glass-card p-6 rounded-2xl space-y-3 border border-transparent hover:border-brand-500/50 hover:-translate-x-1 transition-all duration-300">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">ICS (Intermediate in Computer Science)</h3>
+                            <span class="px-3 py-1 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-extrabold">2021 - 2023</span>
+                        </div>
+                        <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Government College</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Focused on fundamental programming concepts, mathematics, and physics foundations.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Degree 3 -->
+                <div class="animate-child delay-4 relative pl-6 sm:pl-8 group">
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-600 ring-4 ring-slate-50 dark:ring-slate-950 group-hover:scale-150 group-hover:bg-brand-500 transition-all duration-300"></div>
+                    <div class="glass-card p-6 rounded-2xl space-y-3 border border-transparent hover:border-brand-500/50 hover:-translate-x-1 transition-all duration-300">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Matriculation (Science)</h3>
+                            <span class="px-3 py-1 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-extrabold">2019 - 2021</span>
+                        </div>
+                        <p class="text-sm font-bold text-slate-700 dark:text-slate-300">Government School</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Secondary education with a major in science and mathematics.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <button onclick="navigateTo('skills')" class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-brand-500 font-semibold transition">
+                    <i class="fa-solid fa-arrow-left"></i> Technical Skills
+                </button>
+                <button onclick="navigateTo('certifications')" class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-brand-500/10 hover:bg-brand-500/20 text-brand-600 dark:text-brand-400 font-bold transition-all duration-200 group">
+                    <span>Next Section: View Certifications</span>
+                    <i class="fa-solid fa-chevron-right group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE 5: CERTIFICATIONS -->
+        <section id="page-certifications" class="page-transition space-y-10 hidden">
+            <div class="animate-child delay-1 text-center max-w-2xl mx-auto space-y-3">
+                <span class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-widest px-3 py-1 rounded-full bg-brand-500/10">Credentials</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Certifications & Credentials</h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm">Online certifications completed alongside my degree program.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="animate-child delay-2 glass-card p-5 rounded-2xl flex items-start gap-4 border border-transparent hover:border-brand-500 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+                    <div class="p-3.5 rounded-xl bg-blue-500/10 text-blue-500 shrink-0 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm group-hover:text-brand-500 transition-colors">Foundations of Cybersecurity</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Professional Certification</p>
+                    </div>
+                </div>
+
+                <div class="animate-child delay-3 glass-card p-5 rounded-2xl flex items-start gap-4 border border-transparent hover:border-brand-500 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+                    <div class="p-3.5 rounded-xl bg-purple-500/10 text-purple-500 shrink-0 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm group-hover:text-brand-500 transition-colors">Introduction to Artificial Intelligence</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">AI Concepts & Fundamentals</p>
+                    </div>
+                </div>
+
+                <div class="animate-child delay-4 glass-card p-5 rounded-2xl flex items-start gap-4 border border-transparent hover:border-brand-500 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+                    <div class="p-3.5 rounded-xl bg-amber-500/10 text-amber-500 shrink-0 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-google"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm group-hover:text-brand-500 transition-colors">Google AI & AI Essentials</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Google Certified</p>
+                    </div>
+                </div>
+
+                <div class="animate-child delay-5 glass-card p-5 rounded-2xl flex items-start gap-4 border border-transparent hover:border-brand-500 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+                    <div class="p-3.5 rounded-xl bg-emerald-500/10 text-emerald-500 shrink-0 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm group-hover:text-brand-500 transition-colors">Google Prompting Essentials</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Prompt Engineering Mastery</p>
+                    </div>
+                </div>
+
+                <div class="animate-child delay-5 glass-card p-5 rounded-2xl flex items-start gap-4 border border-transparent hover:border-brand-500 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+                    <div class="p-3.5 rounded-xl bg-pink-500/10 text-pink-500 shrink-0 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm group-hover:text-brand-500 transition-colors">Certificate in Calligraphy</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Artistic Achievement</p>
+                    </div>
+                </div>
+
+                <div class="animate-child delay-6 glass-card p-5 rounded-2xl flex items-start gap-4 border border-transparent hover:border-brand-500 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group">
+                    <div class="p-3.5 rounded-xl bg-teal-500/10 text-teal-500 shrink-0 text-xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-certificate"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm group-hover:text-brand-500 transition-colors">Diploma in Half-IT</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Information Technology</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <button onclick="navigateTo('education')" class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-brand-500 font-semibold transition">
+                    <i class="fa-solid fa-arrow-left"></i> Education
+                </button>
+                <button onclick="navigateTo('contact')" class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-brand-500/10 hover:bg-brand-500/20 text-brand-600 dark:text-brand-400 font-bold transition-all duration-200 group">
+                    <span>Next Section: Get In Touch</span>
+                    <i class="fa-solid fa-chevron-right group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE 6: CONTACT -->
+        <section id="page-contact" class="page-transition space-y-10 hidden">
+            <div class="animate-child delay-1 text-center max-w-2xl mx-auto space-y-3">
+                <span class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-widest px-3 py-1 rounded-full bg-brand-500/10">Get In Touch</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Contact Information</h2>
+                <p class="text-slate-600 dark:text-slate-400 text-sm">Feel free to connect with me directly or send a message using the form below.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Left Column: Direct Contact Details -->
+                <div class="animate-child delay-2 lg:col-span-5 glass-card p-8 rounded-3xl space-y-6 border">
+                    <h3 class="text-2xl font-extrabold">Contact Details</h3>
+                    
+                    <div class="space-y-4">
+                        <a href="https://github.com/RidaaHassan" target="_blank" class="w-full flex items-center gap-4 p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 hover:translate-x-1 transition-all duration-200 text-left group">
+                            <div class="p-3 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <i class="fa-brands fa-github"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">GitHub Profile</p>
+                                <p class="text-sm font-bold group-hover:text-brand-500 transition-colors">github.com/RidaaHassan</p>
+                            </div>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-slate-400 text-xs"></i>
+                        </a>
+
+                        <button onclick="copyEmail()" class="w-full flex items-center gap-4 p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 hover:translate-x-1 transition-all duration-200 text-left cursor-pointer group">
+                            <div class="p-3 rounded-xl bg-brand-500/10 text-brand-500 text-lg group-hover:bg-brand-500 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Primary Email</p>
+                                <p class="text-sm font-bold group-hover:text-brand-500 transition-colors">ridahassan.work@gmail.com</p>
+                            </div>
+                            <i class="fa-solid fa-copy text-slate-400 text-xs"></i>
+                        </button>
+
+                        <a href="mailto:241-0054@qu.edu.pk" class="w-full flex items-center gap-4 p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 hover:translate-x-1 transition-all duration-200 text-left group">
+                            <div class="p-3 rounded-xl bg-accent-500/10 text-accent-500 text-lg group-hover:bg-accent-500 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-building-columns"></i>
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">University Email</p>
+                                <p class="text-sm font-bold group-hover:text-accent-500 transition-colors">241-0054@qu.edu.pk</p>
+                            </div>
+                        </a>
+
+                        <a href="tel:03288408052" class="w-full flex items-center gap-4 p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/50 hover:bg-slate-200 dark:hover:bg-slate-800 hover:translate-x-1 transition-all duration-200 text-left group">
+                            <div class="p-3 rounded-xl bg-emerald-500/10 text-emerald-500 text-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Phone</p>
+                                <p class="text-sm font-bold group-hover:text-emerald-500 transition-colors">0328 8408052</p>
+                            </div>
+                        </a>
+
+                        <div class="w-full flex items-center gap-4 p-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/50 group">
+                            <div class="p-3 rounded-xl bg-purple-500/10 text-purple-500 text-lg">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Location</p>
+                                <p class="text-sm font-bold">Jublee Town / Chung, Multan Road, Lahore</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Light & Dark Theme Adaptable Send a Message Card -->
+                <div class="animate-child delay-3 lg:col-span-7 glass-card p-8 rounded-3xl space-y-6 border border-slate-200 dark:border-slate-800 shadow-xl transition-colors duration-300">
+                    <h3 class="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Send a Message</h3>
+
+                    <form id="contactForm" onsubmit="handleFormSubmit(event)" class="space-y-5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Your Name -->
+                            <div class="space-y-2">
+                                <label for="form-name" class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Your Name</label>
+                                <input type="text" id="form-name" required placeholder="John Doe" class="w-full px-4 py-3 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800/80 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 border border-slate-200 dark:border-slate-700/80 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all duration-200">
+                            </div>
+
+                            <!-- Your Email -->
+                            <div class="space-y-2">
+                                <label for="form-email" class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Your Email</label>
+                                <input type="email" id="form-email" required placeholder="john@example.com" class="w-full px-4 py-3 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800/80 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 border border-slate-200 dark:border-slate-700/80 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all duration-200">
+                            </div>
+                        </div>
+
+                        <!-- Subject -->
+                        <div class="space-y-2">
+                            <label for="form-subject" class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Subject</label>
+                            <input type="text" id="form-subject" required placeholder="Project Collaboration / General Inquiry" class="w-full px-4 py-3 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800/80 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 border border-slate-200 dark:border-slate-700/80 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all duration-200">
+                        </div>
+
+                        <!-- Message -->
+                        <div class="space-y-2">
+                            <label for="form-message" class="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Message</label>
+                            <textarea id="form-message" rows="4" required placeholder="Write your message here..." class="w-full px-4 py-3 rounded-xl text-sm font-medium bg-slate-100 dark:bg-slate-800/80 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 border border-slate-200 dark:border-slate-700/80 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all duration-200 resize-y"></textarea>
+                        </div>
+
+                        <!-- Send Button -->
+                        <button type="submit" class="w-full py-3.5 px-6 rounded-xl font-extrabold text-white bg-gradient-to-r from-emerald-500 via-teal-500 to-purple-600 hover:shadow-lg hover:shadow-teal-500/20 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 shadow-md flex items-center justify-center gap-2 cursor-pointer group">
+                            <i class="fa-solid fa-paper-plane text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                            <span>Send Message</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <button onclick="navigateTo('certifications')" class="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-brand-500 font-semibold transition">
+                    <i class="fa-solid fa-arrow-left"></i> Certifications
+                </button>
+                <button onclick="navigateTo('home')" class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-brand-500/10 hover:bg-brand-500/20 text-brand-600 dark:text-brand-400 font-bold transition-all duration-200 group">
+                    <span>Return to Home</span>
+                    <i class="fa-solid fa-house"></i>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="no-print border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 py-6 mt-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-slate-500">
+            <p>© <span id="year"></span> Rida Hassan. All rights reserved.</p>
+            <div class="flex gap-4">
+                <a href="https://github.com/RidaaHassan" target="_blank" class="hover:text-brand-500 transition-colors">GitHub Profile</a>
+                <button onclick="copyEmail()" class="hover:text-brand-500 cursor-pointer transition-colors">Copy Email</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript Engine -->
+    <script>
+        // Set dynamic current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // List of available pages for the single-page routing engine
+        const pages = ['home', 'projects', 'skills', 'education', 'certifications', 'contact'];
+
+        /**
+         * Handles page navigation by showing the active page and hiding others
+         * @param {string} pageId - The ID of the page section to show
+         */
+        function navigateTo(pageId) {
+            pages.forEach(p => {
+                const section = document.getElementById(`page-${p}`);
+                const navBtn = document.getElementById(`nav-${p}`);
+                
+                if (p === pageId) {
+                    section.classList.remove('hidden');
+                    if (navBtn) navBtn.classList.add('nav-link-active');
+                    
+                    // Animate skill progress bars if navigating to skills page
+                    if (p === 'skills') {
+                        setTimeout(() => {
+                            section.querySelectorAll('.progress-bar-fill').forEach(bar => {
+                                const targetWidth = bar.getAttribute('data-progress');
+                                if (targetWidth) {
+                                    bar.style.width = targetWidth;
+                                }
+                            });
+                        }, 100);
+                    }
+                } else {
+                    section.classList.add('hidden');
+                    if (navBtn) navBtn.classList.remove('nav-link-active');
+                }
+            });
+            
+            // Scroll smoothly to top upon changing pages
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Default page load
+        navigateTo('home');
+
+        // Mobile Menu Toggle logic
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+
+        // Dark / Light Theme Toggle logic
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        themeToggle.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                themeIcon.className = 'fa-solid fa-moon text-slate-700';
+            } else {
+                document.documentElement.classList.add('dark');
+                themeIcon.className = 'fa-solid fa-sun text-amber-500';
+            }
+        });
+
+        // Download CV trigger
+        function downloadCV() {
+            window.print();
+        }
+
+        // Copy email address to clipboard with Toast Notification
+        function copyEmail() {
+            const email = "ridahassan.work@gmail.com";
+            navigator.clipboard.writeText(email).then(() => {
+                showToast("Email copied: ridahassan.work@gmail.com");
+            }).catch(() => {
+                showToast("Email: ridahassan.work@gmail.com");
+            });
+        }
+
+        /**
+         * Handles Send a Message Form Submission
+         */
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('form-name').value;
+            
+            showToast(`Thank you, ${name}! Your message has been sent.`);
+            document.getElementById('contactForm').reset();
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = message;
+            
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
